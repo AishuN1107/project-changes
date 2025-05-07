@@ -18,7 +18,8 @@ const io = socketIO(server);
 app.set('io', io);
 
 // Middleware
-app.use(express.static('public'));
+// app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 

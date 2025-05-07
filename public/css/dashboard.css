@@ -94,7 +94,7 @@ body {
 
 .appointment-card {
   background: white;
-  padding: 20px 25px;
+  padding: 25px 20px;
   border-left: 5px solid #007bcd;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
@@ -154,4 +154,49 @@ body {
   border: 1px solid #ccc;
   border-radius: 6px;
   display: block;
+}
+.appointment-card .appt-heading-row,
+.appointment-card .appt-value-row {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 5px;
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+.appointment-card .appt-heading-row {
+  font-weight: bold;
+  color: #003366;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 4px;
+}
+
+.appointment-card .appt-value-row {
+  color: #444;
+}
+
+.row-line {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 columns per row */
+  gap: 25px; /* wider gap between fields */
+  font-size: 15px;
+  margin-bottom: 12px;
+}
+
+.row-line span {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.row-line strong {
+  min-width: 80px;
+  color: #003366;
+}
+.card-buttons {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
 }

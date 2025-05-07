@@ -6,6 +6,7 @@
   <link rel="stylesheet" href="/css/book.css">
 </head>
 <body>
+  <!-- Navbar -->
   <nav class="navbar">
     <div class="navbar-brand">
       <img src="/images/hospital-logo.jpg" alt="Logo" />
@@ -17,6 +18,7 @@
     </ul>
   </nav>
 
+  <!-- Booking Form -->
   <main class="form-container">
     <h2>Book a New Appointment</h2>
     <form id="bookingForm">
@@ -82,7 +84,7 @@
         <option value="">-- Select Time --</option>
         <option value="09:00 AM">09:00 AM</option>
         <option value="10:00 AM">10:00 AM</option>
-        <option value="11:00 PM">11:00 PM</option>
+        <option value="11:00 AM">11:00 AM</option>
         <option value="12:00 PM">12:00 PM</option>
         <option value="02:00 PM">02:00 PM</option>
         <option value="03:00 PM">03:00 PM</option>
@@ -94,11 +96,12 @@
     </form>
   </main>
 
+  <!-- Script -->
   <script>
     const form = document.getElementById('bookingForm');
     const userId = localStorage.getItem('userId');
 
-    // Populate age dropdown from 1 to 100
+    // Populate age dropdown
     const ageSelect = document.getElementById('age');
     for (let i = 1; i <= 100; i++) {
       const option = document.createElement('option');
@@ -119,18 +122,18 @@
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const formData = new FormData(form);
+
       const data = {
         userId,
-        name: formData.get('name'),
-        age: formData.get('age'),
-        phone: formData.get('phone'),
-        gender: formData.get('gender'),
-        department: formData.get('department'),
-        doctor: formData.get('doctor'),
-        service: formData.get('service'),
-        date: formData.get('date'),
-        time: formData.get('time')
+        name: form.elements['name'].value,
+        age: form.elements['age'].value,
+        phone: form.elements['phone'].value,
+        gender: form.elements['gender'].value,
+        department: form.elements['department'].value,
+        doctor: form.elements['doctor'].value,
+        service: form.elements['service'].value,
+        date: form.elements['date'].value,
+        time: form.elements['time'].value
       };
 
       try {
