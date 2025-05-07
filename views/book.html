@@ -20,19 +20,65 @@
   <main class="form-container">
     <h2>Book a New Appointment</h2>
     <form id="bookingForm">
-      <label>Service:</label>
-      <select name="service" required>
+      <!-- Name -->
+      <label for="name">Name:</label>
+      <input type="text" name="name" id="name" required>
+
+      <!-- Age -->
+      <label for="age">Age:</label>
+      <select name="age" id="age" required>
+        <option value="">-- Select Age --</option>
+      </select>
+
+      <!-- Phone Number -->
+      <label for="phone">Phone Number:</label>
+      <input type="tel" name="phone" id="phone" pattern="[0-9]{10}" required placeholder="10-digit number">
+
+      <!-- Gender -->
+      <label for="gender">Gender:</label>
+      <select name="gender" id="gender" required>
+        <option value="">-- Select Gender --</option>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+        <option value="Others">Others</option>
+      </select>
+
+      <!-- Department -->
+      <label for="department">Department:</label>
+      <select name="department" id="department" required>
+        <option value="">-- Select Department --</option>
+        <option value="Cardiology">Cardiology</option>
+        <option value="Neurology">Neurology</option>
+        <option value="Pediatrics">Pediatrics</option>
+        <option value="Orthopedics">Orthopedics</option>
+      </select>
+
+      <!-- Doctor -->
+      <label for="doctor">Doctor:</label>
+      <select name="doctor" id="doctor" required>
+        <option value="">-- Select Doctor --</option>
+        <option value="Dr. Smith">Dr. Smith</option>
+        <option value="Dr. Patel">Dr. Patel</option>
+        <option value="Dr. Lee">Dr. Lee</option>
+        <option value="Dr. Chen">Dr. Chen</option>
+      </select>
+
+      <!-- Service -->
+      <label for="service">Service:</label>
+      <select name="service" id="service" required>
         <option value="">-- Select Service --</option>
         <option value="Consultation">Consultation</option>
         <option value="Therapy">Therapy</option>
         <option value="Checkup">Checkup</option>
       </select>
 
-      <label>Date:</label>
-      <input type="date" name="date" required>
+      <!-- Date -->
+      <label for="date">Date:</label>
+      <input type="date" name="date" id="date" required>
 
-      <label>Time:</label>
-      <select name="time" required>
+      <!-- Time -->
+      <label for="time">Time:</label>
+      <select name="time" id="time" required>
         <option value="">-- Select Time --</option>
         <option value="09:00 AM">09:00 AM</option>
         <option value="10:00 AM">10:00 AM</option>
@@ -43,6 +89,7 @@
         <option value="04:00 PM">04:00 PM</option>
         <option value="05:00 PM">05:00 PM</option>
       </select>
+
       <button type="submit" class="btn">Book Appointment</button>
     </form>
   </main>
@@ -50,6 +97,15 @@
   <script>
     const form = document.getElementById('bookingForm');
     const userId = localStorage.getItem('userId');
+
+    // Populate age dropdown from 1 to 100
+    const ageSelect = document.getElementById('age');
+    for (let i = 1; i <= 100; i++) {
+      const option = document.createElement('option');
+      option.value = i;
+      option.textContent = i;
+      ageSelect.appendChild(option);
+    }
 
     if (!userId) {
       alert("Please login first.");
@@ -66,6 +122,12 @@
       const formData = new FormData(form);
       const data = {
         userId,
+        name: formData.get('name'),
+        age: formData.get('age'),
+        phone: formData.get('phone'),
+        gender: formData.get('gender'),
+        department: formData.get('department'),
+        doctor: formData.get('doctor'),
         service: formData.get('service'),
         date: formData.get('date'),
         time: formData.get('time')
