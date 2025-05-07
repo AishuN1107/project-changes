@@ -6,18 +6,20 @@
   <link rel="stylesheet" href="/css/dashboard.css" />
 </head>
 <body>
+  <!-- Navbar -->
   <nav class="navbar">
     <div class="navbar-brand">
       <img src="/images/hospital-logo.jpg" alt="Logo" />
       <h1>Victoria Multi Speciality Hospital</h1>
     </div>
     <ul class="nav-links">
-      
-  <img src="/images/image.png" alt="Logo"style="width: 20px; height: 20px; vertical-align: middle; margin-right: 0px;" />
-  <li> <a href="#" onclick="logout()">Logout</a></li>
+      < class="nav-links">
+        <img src="/images/image.png" alt="Logo"style="width: 20px; height: 20px; vertical-align: middle; margin-right: 0px;" />
+      <li><a href="#" onclick="logout()">Logout</a></li>
     </ul>
   </nav>
 
+  <!-- Main -->
   <main class="dashboard">
     <h2>Welcome to Your Dashboard</h2>
     <p>Book, View and Manage your appointments below:</p>
@@ -25,9 +27,16 @@
     <div class="dashboard-actions">
       <a href="/book.html" class="btn">Book New Appointment</a>
     </div>
+
     <input type="text" id="searchInput" placeholder="Search by service or date..." class="search-bar" />
     <div id="appointments" class="appointments-container"></div>
   </main>
+
+  <!-- Botpress Floating Chat Widget -->
+  <script src="https://cdn.botpress.cloud/webchat/v2.4/inject.js"></script>
+  <script src="https://files.bpcontent.cloud/2025/05/07/06/20250507064944-XWFWU46K.js"></script>
+
+  <!-- Socket.IO -->
   <script src="/socket.io/socket.io.js"></script>
   <script>
     const userId = localStorage.getItem('userId');
@@ -35,32 +44,32 @@
       alert("You must be logged in.");
       window.location.href = "/login.html";
     }
-  
+
     function logout() {
       localStorage.removeItem('userId');
       window.location.href = "/login.html";
     }
-  
+
     const appointmentsContainer = document.getElementById('appointments');
-  
+
     function renderAppointments(data) {
       appointmentsContainer.innerHTML = '';
       const activeAppointments = data.filter(app => app.status !== 'cancelled');
-  
+
       if (activeAppointments.length === 0) {
         appointmentsContainer.innerHTML = '<p>No active appointments</p>';
         return;
       }
-  
+
       activeAppointments.forEach(app => {
         const item = document.createElement('div');
         item.className = 'appointment-card';
         const dateStr = new Date(app.date).toDateString();
-  
+
         item.innerHTML = `
-          <h3 class="appt-service">${app.service}</h3>
-          <p class="appt-date"><strong>Date:</strong> ${dateStr}</p>
-          <p class="appt-time"><strong>Time:</strong> ${app.time}</p>
+          <h3>${app.service}</h3>
+          <p><strong>Date:</strong> ${dateStr}</p>
+          <p><strong>Time:</strong> ${app.time}</p>
           <p><strong>Status:</strong> ${app.status || 'booked'}</p>
           <div class="card-buttons">
             <button onclick="cancelAppointment('${app._id}')">Cancel</button>
@@ -79,34 +88,34 @@
         appointmentsContainer.appendChild(item);
       });
     }
-  
+
     function fetchAndRenderAppointments() {
       fetch(`/appointments/user/${userId}`)
         .then(res => res.json())
         .then(data => renderAppointments(data));
     }
-  
+
     function cancelAppointment(id) {
       fetch(`/appointments/cancel/${id}`, { method: 'POST' })
-        .then(() => fetchAndRenderAppointments());
+        .then(() => socket.emit('appointment:cancelled'));
     }
-  
+
     function toggleReschedule(id) {
       const form = document.getElementById(`reschedule-${id}`);
       form.style.display = form.style.display === 'none' ? 'block' : 'none';
     }
-  
+
     function rescheduleAppointment(id) {
       const newDate = document.getElementById(`newDate-${id}`).value;
       const newTime = document.getElementById(`newTime-${id}`).value;
-  
+
       fetch(`/appointments/reschedule/${id}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ newDate, newTime })
-      }).then(() => fetchAndRenderAppointments());
+      }).then(() => socket.emit('appointment:rescheduled'));
     }
-  
+
     document.getElementById("searchInput").addEventListener("input", function (e) {
       const query = e.target.value.toLowerCase();
       const cards = document.querySelectorAll(".appointment-card");
@@ -114,10 +123,9 @@
         card.style.display = card.innerText.toLowerCase().includes(query) ? "block" : "none";
       });
     });
-  
-    // Socket.IO setup
+
     const socket = io();
-  
+
     socket.on('appointment:booked', () => {
   fetchAndRenderAppointments();
 });
@@ -131,11 +139,8 @@ socket.on('appointment:rescheduled', (appointment) => {
   alert(`Appointment for "${appointment.service}" has been rescheduled to ${new Date(appointment.date).toDateString()} at ${appointment.time}.`);
   fetchAndRenderAppointments();
 });
-  
-    // Initial load
+
     fetchAndRenderAppointments();
   </script>
-  
-  
 </body>
 </html>
