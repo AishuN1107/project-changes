@@ -2,24 +2,21 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Login - Victoria Hospital</title>
+  <title>Login - Victoria Multi Speciality Hospital</title>
   <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
 
-  <!-- Navbar -->
   <nav class="navbar">
     <div class="navbar-brand">
       <img src="/images/hospital-logo.jpg" alt="Logo" />
-      <h1 class="main-heading">Victoria Hospital</h1>
+      <h1 class="main-heading">Victoria Multi Speciality Hospital</h1>
     </div>
     <ul class="nav-links">
       <li><img src="/images/home-vector-icon.jpg" alt="logo1" style="width: 20px; height: 20px; vertical-align: middle; margin-right: 5px;" /><a href="/">Home</a></li>
     </ul>
   </nav>
   
-
-  <!-- Login Form Section -->
   <section class="form-section">
     <div class="form-container">
       <h2>Login to Your Account</h2>
@@ -34,7 +31,6 @@
 
   <script>
     const form = document.getElementById('loginForm');
-
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const formData = new FormData(form);
@@ -46,12 +42,9 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
       });
-
       const data = await res.json();
-
       if (res.ok) {
         localStorage.setItem('userId', data.userId);
-        alert(data.message);
         window.location.href = '/dashboard.html';
       } else {
         alert(data.error || "Login failed.");
