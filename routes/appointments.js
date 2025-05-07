@@ -5,19 +5,16 @@ const Appointment = require('../models/Appointment');
 const sendEmail = require('../utils/mailer');
 const User = require('../models/user');
 
-// Book Appointment
+
 router.post('/book', async (req, res) => {
   const {
     userId, name, age, phone, gender, department,
     doctor, service, date, time
   } = req.body;
-
   const io = req.app.get('io');
-
   if (!mongoose.Types.ObjectId.isValid(userId)) {
     return res.status(400).json({ error: 'Invalid user ID format.' });
   }
-
   try {
     const appointment = await Appointment.create({
       userId: new mongoose.Types.ObjectId(userId),
@@ -54,7 +51,6 @@ router.post('/book', async (req, res) => {
   }
 });
 
-// Cancel Appointment
 router.post('/cancel/:id', async (req, res) => {
   const io = req.app.get('io');
   try {
@@ -73,7 +69,6 @@ router.post('/cancel/:id', async (req, res) => {
   }
 });
 
-// Reschedule Appointment
 router.post('/reschedule/:id', async (req, res) => {
   const { newDate, newTime } = req.body;
   const io = req.app.get('io');
@@ -98,7 +93,6 @@ router.post('/reschedule/:id', async (req, res) => {
   }
 });
 
-// Get appointments for user
 router.get('/user/:userId', async (req, res) => {
   try {
     const appts = await Appointment.find({ userId: req.params.userId });
@@ -108,7 +102,6 @@ router.get('/user/:userId', async (req, res) => {
   }
 });
 
-// Get booked times for a date
 router.get('/booked-times', async (req, res) => {
   const { date } = req.query;
   if (!date) return res.status(400).send("Date required");
