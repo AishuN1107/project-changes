@@ -8,7 +8,7 @@ body {
 .navbar {
   background-color: #007bcd;
   color: white;
-  padding: 15px 30px;
+  padding: 3px 30px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -31,6 +31,7 @@ body {
   align-items: center;
   gap: 15px;
 }
+
 
 .navbar-brand img {
   max-width: 60px;
@@ -226,19 +227,9 @@ body {
   border-radius: 6px;
 }
 
-.form-container button {
-  width: 100%;
-  padding: 12px;
-  background-color: #007bcd;
-  color: white;
-  font-weight: bold;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
 
 .form-container p {
-  margin-top: 15px;
+  margin-top: 25px;
   font-size: 0.95em;
 }
 
@@ -307,4 +298,81 @@ body {
   height: 50px;
   margin-left: 15px;
   filter: brightness(0) invert(1);
+}
+
+.navbar .nav-links li a:hover {
+  text-decoration: underline;
+  color: #005fa3;
+  background-color: white;
+}
+
+.btn:hover {
+  background-color: #005fa3; 
+  color: #ffffff;
+  text-decoration: none;
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.hero {
+  background: linear-gradient(to right, #f2f9ff, #e0f0ff);
+}
+.hero h1 {
+  animation: fadeInUp 1s ease-out;
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.testimonial img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+.testimonial::before {
+  content: "★ ★ ★ ★ ★";
+  color: gold;
+  font-size: 1rem;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.form-container input:focus {
+  outline: none;
+  border-color: #007bcd;
+  box-shadow: 0 0 5px rgba(0, 123, 205, 0.5);
+  transition: all 0.2s ease-in-out;
+}
+
+.form-container {
+  transition: box-shadow 0.3s ease;
+}
+
+/* Smaller Button */
+.form-container button {
+  width: 40%;
+  padding: 8px 15px;  /* Decreased padding */
+  font-size: 1em;  /* Slightly smaller font size */
+  background-color: #007bcd;
+  color: white;
+  font-weight: bold;
+  border: darkblue;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-top: 5%;
+}
+
+.form-container button:hover {
+  background-color: #005fa3;
+  transform: scale(1.03);
+  transition: all 0.3s ease-in-out;
 }
