@@ -1,0 +1,64 @@
+/* body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f4f9ff;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .navbar {
+    background-color: #007bcd;
+    color: white;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .navbar-brand img {
+    max-width: 40px;
+    height: auto;
+    border-radius: 6px;
+  }
+  
+  .navbar-brand h1 {
+    font-size: 20px;
+    color: white;
+  }
+  
+  .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+  }
+  
+  .nav-links li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .profile-container {
+    max-width: 600px;
+    margin: 60px auto;
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0,123,205,0.1);
+  }
+  
+  .profile-container h2 {
+    color: #007bcd;
+    text-align: center;
+  }
+  
+  .profile-card p {
+    font-size: 18px;
+    margin: 15px 0;
+  }
+   */

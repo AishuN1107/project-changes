@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login - Victoria Hospital</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <img src="/images/hospital-logo.jpg" alt="Logo" />
+      <h1 class="main-heading">Victoria Hospital</h1>
+    </div>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+    </ul>
+  </nav>
+  
+
+  <!-- Login Form Section -->
+  <section class="form-section">
+    <div class="form-container">
+      <h2>Login to Your Account</h2>
+      <form id="loginForm">
+        <input type="email" name="email" placeholder="Email" required><br>
+        <input type="password" name="password" placeholder="Password" required><br>
+        <button type="submit">Login</button>
+      </form>
+      <p>Don't have an account? <a href="/register.html">Register here</a></p>
+    </div>
+  </section>
+
+  <script>
+    const form = document.getElementById('loginForm');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(form);
+      const email = formData.get('email');
+      const password = formData.get('password');
+
+      const res = await fetch('/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        localStorage.setItem('userId', data.userId);
+        alert(data.message);
+        window.location.href = '/dashboard.html';
+      } else {
+        alert(data.error || "Login failed.");
+      }
+    });
+  </script>
+
+</body>
+</html>
+
+
+
+
+
+

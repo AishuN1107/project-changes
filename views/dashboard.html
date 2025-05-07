@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dashboard - Victoria Hospital</title>
+  <link rel="stylesheet" href="/css/dashboard.css" />
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <img src="/images/hospital-logo.jpg" alt="Logo" />
+      <h1>Victoria Hospital</h1>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#" onclick="logout()">Logout</a></li>
+    </ul>
+  </nav>
+
+  <main class="dashboard">
+    <h2>Welcome to Your Dashboard</h2>
+    <p>Book, View and Manage your appointments below:</p>
+
+    <div class="dashboard-actions">
+      <a href="/book.html" class="btn">Book New Appointment</a>
+    </div>
+    <input type="text" id="searchInput" placeholder="Search by service or date..." class="search-bar" />
+    <div id="appointments" class="appointments-container"></div>
+  </main>
+
+  <script>
+    const userId = localStorage.getItem('userId');
+    if (!userId) {
+      alert("You must be logged in.");
+      window.location.href = "/login.html";
+    }
+
+    function logout() {
+      localStorage.removeItem('userId');
+      window.location.href = "/login.html";
+    }
+
+    const appointments = document.getElementById('appointments');
+
+    fetch(`/appointments/user/${userId}`)
+      .then(res => res.json())
+      .then(data => {
+        const activeAppointments = data.filter(app => app.status !== 'cancelled');
+
+        if (activeAppointments.length === 0) {
+          appointments.innerHTML = '<p>No active appointments</p>';
+          return;
+        }
+
+        activeAppointments.forEach(app => {
+          const item = document.createElement('div');
+          item.classList.add('appointment-card');
+
+          const dateStr = new Date(app.date).toDateString();
+
+          item.innerHTML = `
+            <strong>${app.service}</strong> on ${dateStr} at ${app.time}<br>
+            <span>Status: <em>${app.status || 'booked'}</em></span><br>
+            <button onclick="cancelAppointment('${app._id}')"> Cancel</button>
+            <button onclick="toggleReschedule('${app._id}')"> Reschedule</button>
+            <div id="reschedule-${app._id}" style="display:none; margin-top: 10px;">
+              <input type="date" id="newDate-${app._id}" required>
+              <select id="newTime-${app._id}">
+                <option value="09:00 AM">09:00 AM</option>
+                <option value="11:00 AM">11:00 AM</option>
+                <option value="02:00 PM">02:00 PM</option>
+              </select>
+              <button onclick="rescheduleAppointment('${app._id}')">Submit</button>
+            </div>
+            <hr>
+          `;
+
+          appointments.appendChild(item);
+        });
+      });
+
+    function cancelAppointment(id) {
+      fetch(`/appointments/cancel/${id}`, { method: 'POST' })
+        .then(() => location.reload());
+    }
+
+    function toggleReschedule(id) {
+      const form = document.getElementById(`reschedule-${id}`);
+      form.style.display = form.style.display === 'none' ? 'block' : 'none';
+    }
+
+    function rescheduleAppointment(id) {
+      const newDate = document.getElementById(`newDate-${id}`).value;
+      const newTime = document.getElementById(`newTime-${id}`).value;
+
+      fetch(`/appointments/reschedule/${id}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ newDate, newTime })
+      }).then(() => location.reload());
+    }
+    document.getElementById("searchInput").addEventListener("input", function (e) {
+  const query = e.target.value.toLowerCase();
+  const cards = document.querySelectorAll(".appointment-card");
+  cards.forEach(card => {
+    card.style.display = card.innerText.toLowerCase().includes(query) ? "block" : "none";
+  });
+});
+
+  </script>
+</body>
+</html>
