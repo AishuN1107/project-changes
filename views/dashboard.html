@@ -124,9 +124,19 @@
 
     const socket = io();
 
-    socket.on('appointment:booked', fetchAndRenderAppointments);
-    socket.on('appointment:cancelled', fetchAndRenderAppointments);
-    socket.on('appointment:rescheduled', fetchAndRenderAppointments);
+    socket.on('appointment:booked', () => {
+  fetchAndRenderAppointments();
+});
+
+socket.on('appointment:cancelled', (appointment) => {
+  alert(`Appointment for "${appointment.service}" on ${new Date(appointment.date).toDateString()} at ${appointment.time} was cancelled.`);
+  fetchAndRenderAppointments();
+});
+
+socket.on('appointment:rescheduled', (appointment) => {
+  alert(`Appointment for "${appointment.service}" has been rescheduled to ${new Date(appointment.date).toDateString()} at ${appointment.time}.`);
+  fetchAndRenderAppointments();
+});
 
     fetchAndRenderAppointments();
   </script>
